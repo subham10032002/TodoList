@@ -8,6 +8,11 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
+        app:titleTextColor="@color/white"
+        android:background="@color/darkblue"
+        app:title="TODO"
+
+        app:subtitleTextColor="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -23,5 +28,6 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="32dp"
+        android:src="@drawable/ic_baseline_add_24"
         />
 </RelativeLayout>
