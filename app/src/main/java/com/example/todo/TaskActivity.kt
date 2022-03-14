@@ -1,10 +1,12 @@
 package com.example.todo
 
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.DatePicker
+import android.widget.TimePicker
 import androidx.room.Room
 import kotlinx.android.synthetic.main.activity_task.*
 import java.text.SimpleDateFormat
@@ -16,6 +18,7 @@ class TaskActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var myCalendar : Calendar
 
     lateinit var dateSetListener:DatePickerDialog.OnDateSetListener
+    lateinit var timeSetListener: TimePickerDialog.OnTimeSetListener
     val db by lazy{
         Room.databaseBuilder(
             this,
@@ -28,6 +31,8 @@ class TaskActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_task)
 
        dateEdit.setOnClickListener(this)
+        timeEdit.setOnClickListener(this)
+
 
 
     }
@@ -37,7 +42,37 @@ class TaskActivity : AppCompatActivity(), View.OnClickListener {
            R.id.dateEdit -> {
                setListener()
            }
+           R.id.timeEdit -> {
+               setTimeListener()
+           }
        }
+
+    }
+
+    private fun setTimeListener() {
+        myCalendar = Calendar.getInstance()
+
+        timeSetListener = TimePickerDialog.OnTimeSetListener{ _: TimePicker, hourOfDay: Int, min: Int ->
+            myCalendar.set(Calendar.HOUR_OF_DAY,hourOfDay)
+            myCalendar.set(Calendar.MINUTE,min)
+            updateTime()
+        }
+
+        val timePickerDialog = TimePickerDialog(
+            this,timeSetListener,
+            myCalendar.get(Calendar.HOUR_OF_DAY),
+            myCalendar.get(Calendar.MINUTE),false
+        )
+//
+
+        timePickerDialog.show()
+    }
+
+    private fun updateTime() {
+        val myFormat = "h:mm a"  //2:23 AM
+        val sdf = SimpleDateFormat(myFormat)
+        timeEdit.setText(sdf.format(myCalendar.time))
+
 
     }
 
