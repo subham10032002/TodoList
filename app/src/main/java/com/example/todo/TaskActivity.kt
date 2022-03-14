@@ -5,6 +5,7 @@ import android.app.TimePickerDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.TimePicker
 import androidx.room.Room
@@ -19,6 +20,7 @@ class TaskActivity : AppCompatActivity(), View.OnClickListener {
 
     lateinit var dateSetListener:DatePickerDialog.OnDateSetListener
     lateinit var timeSetListener: TimePickerDialog.OnTimeSetListener
+    private val labels = arrayListOf("Personal","Business","Insurance","Banking")
     val db by lazy{
         Room.databaseBuilder(
             this,
@@ -33,8 +35,15 @@ class TaskActivity : AppCompatActivity(), View.OnClickListener {
        dateEdit.setOnClickListener(this)
         timeEdit.setOnClickListener(this)
 
+      setUpSpinner()
 
+    }
 
+    private fun setUpSpinner() {
+        val adapter = ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,labels)
+        labels.sort()
+
+        spinnerCategory.adapter = adapter
     }
 
     override fun onClick(v: View?) {
