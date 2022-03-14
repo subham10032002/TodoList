@@ -8,13 +8,14 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
-        app:titleTextColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/darkblue"
-        app:title="TODO"
+        app:theme="@style/ToolbarTheme"
 
         app:subtitleTextColor="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        app:title="TODO"
+        app:titleTextColor="@color/white" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/todoRV"
