@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+
     fun openNewTask(view: View){
         startActivity(Intent(this,TaskActivity::class.java))
     }

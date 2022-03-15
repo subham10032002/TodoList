@@ -14,6 +14,9 @@
     <color name="redl">#D82148</color>
     <color name="side">#6EBF8B</color>
     <color name="orange">#F76E11</color>
+    <color name="litherGray">#a1a1a1</color>
+    <color name="green">#388E3C</color>
+    <color name="red">#D32F2F</color>
 
     <array name="random_color">
         <item name="red_400" type="color">#e84e40</item>
