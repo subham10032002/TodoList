@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../../layout/custom_preview.xml" value="0.1" />
         <entry key="app/src/main/res/drawable-anydpi-v24/ic_stat_name.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_calender.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_time.xml" value="0.1" />

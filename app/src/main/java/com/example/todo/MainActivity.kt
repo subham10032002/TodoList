@@ -1,18 +1,24 @@
 package com.example.todo
 
+
 import android.content.Intent
 import android.graphics.*
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-
-
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -37,7 +43,7 @@ class MainActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = this@MainActivity.adapter
         }
-//        swipe()
+        initSwipe()
 
         db.todoDao().getTask().observe(this, Observer {
             if(!it.isNullOrEmpty()){
@@ -56,56 +62,59 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-//    fun swipe(){
-//        val simpleItemTouchCallBack = object : ItemTouchHelper.SimpleCallback(0,
-//            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT){
-//            override fun onMove(
-//                recyclerView: RecyclerView,
-//                viewHolder: RecyclerView.ViewHolder,
-//                target: RecyclerView.ViewHolder
-//            ): Boolean = false
+    fun initSwipe(){
+        val simpleItemTouchCallBack = object : ItemTouchHelper.SimpleCallback(0,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT){
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean = false
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+
+                if(direction == ItemTouchHelper.LEFT){
+                    GlobalScope.launch(Dispatchers.IO) {
+                        db.todoDao().deleteTask(adapter.getItemId(position))
+                    }
+                }
+                else if(direction == ItemTouchHelper.RIGHT){
+                    GlobalScope.launch(Dispatchers.IO) {
+                        db.todoDao().finishTask(adapter.getItemId(position))
+                    }
+                }
+
+            }
+
+            override fun onChildDraw(
+                c: Canvas,
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                dX: Float,
+                dY: Float,
+                actionState: Int,
+                isCurrentlyActive: Boolean
+            ) {
+                if(actionState == ItemTouchHelper.ACTION_STATE_SWIPE){
+                    val itemView = viewHolder.itemView
+
+                   val paint = Paint()
+                    var icon:Bitmap
+
+                    if(dX > 0){ // moving on x direction means going from left to right
+
+//                        ContextCompat.getDrawable(this@MainActivity, R.drawable.ic_baseline_add_24)?.toBitmap()
 //
-//            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-//                val position = viewHolder.adapterPosition
 //
-//                if(direction == ItemTouchHelper.LEFT){
-//                    GlobalScope.launch(Dispatchers.IO) {
-//                        db.todoDao().deleteTask(adapter.getItemId(position))
-//                    }
-//                }
-//                else if(direction == ItemTouchHelper.RIGHT){
-//                    GlobalScope.launch(Dispatchers.IO) {
-//                        db.todoDao().finishTask(adapter.getItemId(position))
-//                    }
-//                }
-//
-//            }
-//
-//            override fun onChildDraw(
-//                c: Canvas,
-//                recyclerView: RecyclerView,
-//                viewHolder: RecyclerView.ViewHolder,
-//                dX: Float,
-//                dY: Float,
-//                actionState: Int,
-//                isCurrentlyActive: Boolean
-//            ) {
-//                if(actionState == ItemTouchHelper.ACTION_STATE_SWIPE){
-//                    val itemView = viewHolder.itemView
-//
-//                   val paint = Paint()
-//                    val icon:Bitmap
-//
-//                    if(dX > 0){ // moving on x direction means going from left to right
-//
-//                        icon = BitmapFactory.decodeResource(resources,R.mipmap.ic_launcher_done)
-//
-//                        paint.color = Color.parseColor("#388E3C")
-//                        c.drawRect(
-//                            itemView.left.toFloat(),itemView.top.toFloat(),
-//                            itemView.left.toFloat() + dX , itemView.bottom.toFloat(),paint
-//                        )
-//
+//                        icon = BitmapFactory.decodeResource(resources,R.drawable.ic_baseline_add_24,)
+
+                        paint.color = Color.parseColor("#388E3C")
+                        c.drawRect(
+                            itemView.left.toFloat(),itemView.top.toFloat(),
+                            itemView.left.toFloat() + dX , itemView.bottom.toFloat(),paint
+                        )
+
 //                        c.drawBitmap(
 //                            icon,
 //                            itemView.left.toFloat() ,
@@ -114,16 +123,17 @@ class MainActivity : AppCompatActivity() {
 //                                    icon.height.toFloat()) /  2 ,
 //                            paint
 //                        )
-//                    }
-//                    else {
-//                        icon = BitmapFactory.decodeResource(resources,R.mipmap.ic_launcher_delete)
-//
-//                        paint.color = Color.parseColor("#D32F2F")
-//                        c.drawRect(
-//                            itemView.right.toFloat() + dX ,itemView.top.toFloat(),
-//                            itemView.right.toFloat()  , itemView.bottom.toFloat(),paint
-//                        )
-//
+                    }
+                    else {
+//                        ContextCompat.getDrawable(this@MainActivity, R.drawable.ic_baseline_add_24)?.toBitmap()
+//                        icon = BitmapFactory.decodeResource(resources,R.drawable.ic_baseline_add_24,null)
+
+                        paint.color = Color.parseColor("#D32F2F")
+                        c.drawRect(
+                            itemView.right.toFloat() + dX ,itemView.top.toFloat(),
+                            itemView.right.toFloat()  , itemView.bottom.toFloat(),paint
+                        )
+
 //                        c.drawBitmap(
 //                            icon,
 //                            itemView.right.toFloat() - icon.width,
@@ -132,29 +142,29 @@ class MainActivity : AppCompatActivity() {
 //                                    icon.height.toFloat())/2,
 //                            paint
 //                        )
-//                    }
-//                    viewHolder.itemView.translationX = dX
-//                }
-//                 else {
-//                    super.onChildDraw(
-//                        c,
-//                        recyclerView,
-//                        viewHolder,
-//                        dX,
-//                        dY,
-//                        actionState,
-//                        isCurrentlyActive
-//                    )
-//                }
-//            }
-//
-//
-//
-//        }
-//
-//        val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallBack)
-//        itemTouchHelper.attachToRecyclerView(todoRV)
-//    }
+                    }
+                    viewHolder.itemView.translationX = dX
+                }
+                 else {
+                    super.onChildDraw(
+                        c,
+                        recyclerView,
+                        viewHolder,
+                        dX,
+                        dY,
+                        actionState,
+                        isCurrentlyActive
+                    )
+                }
+            }
+
+
+
+        }
+
+        val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallBack)
+        itemTouchHelper.attachToRecyclerView(todoRV)
+    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu,menu)
