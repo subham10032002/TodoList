@@ -3,13 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable-anydpi-v24/ic_stat_name.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_calender.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_time.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_history.xml" value="0.2947916666666667" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.2598187311178248" />
-        <entry key="app/src/main/res/layout/activity_task.xml" value="0.24726867675781253" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.18615570068359377" />
+        <entry key="app/src/main/res/layout/activity_task.xml" value="0.25932006835937504" />
         <entry key="app/src/main/res/layout/item_todos.xml" value="0.28097229003906254" />
         <entry key="app/src/main/res/menu/main_menu.xml" value="0.31640472412109377" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />
       </map>
     </option>
   </component>

@@ -21,7 +21,11 @@
         android:id="@+id/todoRV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar" />
+        android:layout_below="@+id/toolbar"
+        tools:itemCount="3"
+        android:padding="8dp"
+        tools:listitem="@layout/item_todos"
+        />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"

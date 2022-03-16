@@ -11,10 +11,10 @@ interface TodoDao{
     @Insert()
     suspend fun insertTask(todoModel: TodoModel) :Long
 
-    @Query("Select * From TodoModel where isFinished != -1")
+    @Query("Select * From TodoModel where isFinished == 0")
     fun getTask(): LiveData<List<TodoModel>>
 
-    @Query("Update TodoModel Set isFinished=1 Where id=:uid")
+    @Query("Update TodoModel Set isFinished = 1 Where id=:uid")
     fun finishTask(uid:Long)
 
     @Query("Delete From TodoModel  Where id=:uid")

@@ -17,7 +17,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolBarNewTask"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             app:title="ADD NEW TASK"
             app:titleTextColor="@color/white"
             android:background="@color/darkblue"
@@ -191,11 +191,11 @@
 
             <Spinner
                 android:id="@+id/spinnerCategory"
-                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                />
+                android:layout_weight="1"
+                android:contentDescription="@string/appbar_scrolling_view_behavior" />
 
 
             <ImageView

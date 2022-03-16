@@ -27,7 +27,7 @@ class TaskActivity : AppCompatActivity(), View.OnClickListener {
 
     var fDate = 0L
     var fTime = 0L
-    private val labels = arrayListOf("Personal","Business","Insurance","Banking")
+    private val labels = arrayListOf("Personal","Business","Insurance","Banking","Shopping")
     val db by lazy{
         AppDatabase.getDatabase(this)
     }

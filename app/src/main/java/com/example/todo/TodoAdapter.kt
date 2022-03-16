@@ -11,18 +11,35 @@ import java.util.*
 
 class TodoAdapter(val list:List<TodoModel>) : RecyclerView.Adapter<TodoAdapter.TodoViewHolder>() {
 
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder {
+        return TodoViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_todos,parent,false))
+    }
+
+    override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
+        holder.bind(list[position])
+    }
+
+    override fun getItemCount(): Int {
+        return list.size
+    }
+
+    override fun getItemId(position: Int): Long {
+        return list[position].id
+    }
+
     class TodoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(todoModel: TodoModel) {
-             with(itemView){
-                 val colors = resources.getIntArray(R.array.random_color)
-                 val randomColor = colors[Random().nextInt(colors.size)]
-                 viewColorTag.setBackgroundColor(randomColor)
-                 txtShowTitle.text = todoModel.title
-                 txtShowTask.text = todoModel.description
-                 txtShowCategory.text = todoModel.category
-                 updateTime(todoModel.time)
-                 updateDate(todoModel.date)
-             }
+            with(itemView){
+                val colors = resources.getIntArray(R.array.random_color)
+                val randomColor = colors[Random().nextInt(colors.size)]
+                viewColorTag.setBackgroundColor(randomColor)
+                txtShowTitle.text = todoModel.title
+                txtShowTask.text = todoModel.description
+                txtShowCategory.text = todoModel.category
+                updateTime(todoModel.time)
+                updateDate(todoModel.date)
+            }
         }
 
         private fun updateTime(time: Long) {
@@ -41,18 +58,6 @@ class TodoAdapter(val list:List<TodoModel>) : RecyclerView.Adapter<TodoAdapter.T
         }
 
 
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder {
-        return TodoViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_todos,parent,false))
-    }
-
-    override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
-        holder.bind(list[position])
-    }
-
-    override fun getItemCount(): Int {
-        return list.size
     }
 
 
