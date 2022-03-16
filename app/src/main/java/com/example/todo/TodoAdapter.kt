@@ -37,6 +37,7 @@ class TodoAdapter(val list:List<TodoModel>) : RecyclerView.Adapter<TodoAdapter.T
                 txtShowTitle.text = todoModel.title
                 txtShowTask.text = todoModel.description
                 txtShowCategory.text = todoModel.category
+                txtShowAlarm.text = todoModel.category1
                 updateTime(todoModel.time)
                 updateDate(todoModel.date)
             }

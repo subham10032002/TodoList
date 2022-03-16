@@ -2,4 +2,5 @@
     <string name="app_name">Todo</string>
     <string name="date">Date</string>
     <string name="time">Time</string>
+    <string name="AlarmTime">AlarmTime</string>
 </resources>

@@ -1,13 +1,14 @@
 package com.example.todo
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.DatePicker
-import android.widget.TimePicker
+import android.widget.*
 import androidx.room.Room
 import kotlinx.android.synthetic.main.activity_task.*
 import kotlinx.coroutines.Dispatchers
@@ -16,6 +17,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 const val DB_NAME = "todo.db"
 class TaskActivity : AppCompatActivity(), View.OnClickListener {
@@ -28,6 +30,7 @@ class TaskActivity : AppCompatActivity(), View.OnClickListener {
     var fDate = 0L
     var fTime = 0L
     private val labels = arrayListOf("Personal","Business","Insurance","Banking","Shopping")
+    private val labels2 = arrayListOf("10 min","15 min","30 min","60 min","90 min")
     val db by lazy{
         AppDatabase.getDatabase(this)
     }
@@ -38,10 +41,14 @@ class TaskActivity : AppCompatActivity(), View.OnClickListener {
        dateEdit.setOnClickListener(this)
         timeEdit.setOnClickListener(this)
         saveBtn.setOnClickListener(this)
+        imgAddCategory.setOnClickListener(this)
+        imgAddCategory1.setOnClickListener(this)
 
       setUpSpinner()
+        setUpSpinner2()
 
     }
+
 
     private fun setUpSpinner() {
         val adapter = ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,labels)
@@ -49,6 +56,13 @@ class TaskActivity : AppCompatActivity(), View.OnClickListener {
 
         spinnerCategory.adapter = adapter
     }
+    private fun setUpSpinner2() {
+        val adapter = ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,labels2)
+        labels2.sort()
+
+        spinnerCategory1.adapter = adapter
+    }
+
 
     override fun onClick(v: View?) {
        when(v?.id){
@@ -61,12 +75,44 @@ class TaskActivity : AppCompatActivity(), View.OnClickListener {
            R.id.saveBtn -> {
                saveTask()
            }
+           R.id.imgAddCategory -> {
+               addCategory("Enter new category!" , labels)
+           }
+           R.id.imgAddCategory1 -> {
+               addCategory("Set your own time!" , labels2)
+           }
        }
+
+    }
+
+    private fun addCategory(xyz : String , listt : ArrayList<String>) {
+
+            val builder = AlertDialog.Builder(this)
+        val inflater = layoutInflater
+        val dialogLayout = inflater.inflate(R.layout.edit_text_layout,null)
+        val editText = dialogLayout.findViewById<EditText>(R.id.editTextCategory)
+        with(builder){
+            setTitle(xyz)
+            setPositiveButton("Ok"){
+                dialog, which ->
+                listt.add(editText.text.toString())
+
+            }
+            setNegativeButton("Cancel"){
+                dialog, which ->
+                Log.d("Main","Negative Button clicked")
+
+            }
+            setView(dialogLayout)
+            show()
+        }
+
 
     }
 
     private fun saveTask() {
        val category = spinnerCategory.selectedItem.toString()
+        val category1 = spinnerCategory1.selectedItem.toString()
         val title = taskTitle.editText?.text.toString()
         val description = taskDesciption.editText?.text.toString()
 
@@ -77,6 +123,7 @@ class TaskActivity : AppCompatActivity(), View.OnClickListener {
                         title,
                         description,
                         category,
+                        category1,
                         fDate,
                         fTime
                     )
